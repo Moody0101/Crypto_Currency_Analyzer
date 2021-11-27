@@ -80,10 +80,10 @@ class Analyser:
 				# print(Items)
 				plot(Items[0], Items[1])
 				if self.symbol:
-				title(f"{self.symbol} {self.start}/{self.end}")
-				xlabel("Day")
-				ylabel("Price")
-				show()
+					title(f"{self.symbol} {self.start}/{self.end}")
+					xlabel("Day")
+					ylabel("Price")
+					show()
 
 			else:
 				raise SymbolNotSpecified("Specify the currency symbol !")
@@ -91,16 +91,13 @@ class Analyser:
 			Items = self.Unzip(self.getClose(file))
 			plot(Items[0], Items[1])
 			if self.symbol:
-			title(f"Closing price {min(Items[0])}{max(Items[0])}")
-			xlabel("Day")
-			ylabel("Price")
-			show()
-
-analize = Analyser("XRP-USD", "2021-11-01", "2021-11-24")
-
-
-
-analize.PlotClose()
+				title(f"Closing price {min(Items[0])}{max(Items[0])}")
+				xlabel("Day")
+				ylabel("Price")
+				show()
+if __name__ == "__main__":
+	analize = Analyser("XRP-USD", "2021-11-01", "2021-11-24")
+	analize.PlotClose()
 # 'SOL'
 # 'XRP'
 

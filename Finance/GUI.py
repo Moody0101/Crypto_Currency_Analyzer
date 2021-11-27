@@ -17,26 +17,55 @@ to do:
     
     [*] Make design in QT. DONE!
     [ ] embedd functionality.
-    [ ] Push to githbu.
+        [ * ] Figure out how to connect events to QPushbuttons.
+        [ * ] Getting the values from entries.
+        [ * ] Commit initializing the Analy.. class.
+        [ * ] Plot.
+        [ ] Develope more features.
     [ ] Make Blog and documentation.
-
-
 """
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow
 import sys
-# from CurrencyAnalizer import Analyser
+from CurrencyAnalizer import Analyser
+
+
 
 class Ui_GUI(object):
     
 
-    def Ploter(self):
-        print('Hello')
-
+    def GetText(self):
+        if not self.CurrencyInput.toPlainText():
+            self.Error = QtWidgets.QTextBrowser(self.centralwidget)
+            self.Error.setGeometry(QtCore.QRect(0, 0, 200, 100))
+            self.Error.setStyleSheet("border-radius: 20px;padding:10;")
+            self.Error.setText("The currency symbol is not set! ")
+            self.Error.show()
+        if not self.StartDate.toPlainText():
+            self.Error = QtWidgets.QTextBrowser(self.centralwidget)
+            self.Error.setGeometry(QtCore.QRect(100, 0, 100, 100))
+            self.Error.setStyleSheet("border-radius: 20px;padding:10;")
+            self.Error.setText("the start date is not specified! ")
+            self.Error.show()
+        if not self.EndDate.toPlainText():
+            self.Error = QtWidgets.QTextBrowser(self.centralwidget)
+            self.Error.setGeometry(QtCore.QRect(200, 0, 100, 100))
+            self.Error.setStyleSheet("border-radius: 20px;padding:10;")
+            self.Error.setText("the End data is not specified! ")
+            self.Error.show()
+        else:
+            try:
+                analize = Analyser(f"{self.CurrencyInput.toPlainText()}-USD",self.StartDate.toPlainText(), self.EndDate.toPlainText())
+                analize.PlotClose()
+            except:
+                self.Error = QtWidgets.QTextBrowser(self.centralwidget)
+                self.Error.setGeometry(QtCore.QRect(579, 281, 100, 100))
+                self.Error.setStyleSheet("border-radius: 20px;padding:10;")
+                self.Error.setText("Something went wrong, verify you data formating!")
+                self.Error.show()
+                
     def setupUi(self, GUI):
+        
         GUI.setObjectName("GUI")
         GUI.setWindowModality(QtCore.Qt.WindowModal)
         GUI.resize(679, 381)
@@ -51,9 +80,8 @@ class Ui_GUI(object):
         self.centralwidget.setEnabled(True)
         self.centralwidget.setStyleSheet("background: black; color: white")
         self.centralwidget.setObjectName("centralwidget")
-        self.PlotButton = QtWidgets.QPushButton(self.centralwidget)
-        self.PlotButton.clicked.connect(self.Ploter)
-        self.PlotButton.setFocus()
+        self.PlotButton = QtWidgets.QPushButton("Plot", self.centralwidget, clicked=self.GetText)
+        
         
         self.PlotButton.setGeometry(QtCore.QRect(110, 260, 121, 31))
         self.PlotButton.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -63,25 +91,25 @@ class Ui_GUI(object):
         self.PlotButton.setStyleSheet("background: white; color: black; border-radius: 10px; font-family: sans-serif;")
         self.PlotButton.setObjectName("PlotButton")
 
-        self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit.setGeometry(QtCore.QRect(90, 120, 161, 21))
+        self.CurrencyInput = QtWidgets.QTextEdit(self.centralwidget)
+        self.CurrencyInput.setGeometry(QtCore.QRect(90, 120, 161, 21))
         font = QtGui.QFont()
         font.setFamily("sans-serif")
-        self.textEdit.setFont(font)
-        self.textEdit.setStyleSheet("background: white; color: black; border-radius: 3px; font-family: sans-serif;text-align:center;")
-        self.textEdit.setAcceptRichText(True)
-        self.textEdit.setPlaceholderText("Currency Symbol")
-        self.textEdit.setObjectName("textEdit")
-        self.textEdit_2 = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit_2.setGeometry(QtCore.QRect(90, 170, 161, 21))
-        self.textEdit_2.setStyleSheet("background: white; color: black; border-radius: 3px; font-family: sans-serif;")
-        self.textEdit_2.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.textEdit_2.setTabChangesFocus(True)
-        self.textEdit_2.setObjectName("textEdit_2")
-        self.textEdit_3 = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit_3.setGeometry(QtCore.QRect(90, 220, 161, 21))
-        self.textEdit_3.setStyleSheet("background: white; color: black; border-radius: 3px; font-family: sans-serif;")
-        self.textEdit_3.setObjectName("textEdit_3")
+        self.CurrencyInput.setFont(font)
+        self.CurrencyInput.setStyleSheet("background: white; color: black; border-radius: 3px; font-family: sans-serif;text-align:center;")
+        self.CurrencyInput.setAcceptRichText(True)
+        self.CurrencyInput.setPlaceholderText("Currency Symbol")
+        self.CurrencyInput.setObjectName("textEdit")
+        self.StartDate = QtWidgets.QTextEdit(self.centralwidget)
+        self.StartDate.setGeometry(QtCore.QRect(90, 170, 161, 21))
+        self.StartDate.setStyleSheet("background: white; color: black; border-radius: 3px; font-family: sans-serif;")
+        self.StartDate.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.StartDate.setTabChangesFocus(True)
+        self.StartDate.setObjectName("textEdit_2")
+        self.EndDate = QtWidgets.QTextEdit(self.centralwidget)
+        self.EndDate.setGeometry(QtCore.QRect(90, 220, 161, 21))
+        self.EndDate.setStyleSheet("background: white; color: black; border-radius: 3px; font-family: sans-serif;")
+        self.EndDate.setObjectName("self.EndDate")
         self.textBrowser_2 = QtWidgets.QTextBrowser(self.centralwidget)
         self.textBrowser_2.setGeometry(QtCore.QRect(350, 50, 311, 281))
         self.textBrowser_2.setStyleSheet("border: 1px solid white; border-radius: 20px;padding:10")
@@ -94,23 +122,20 @@ class Ui_GUI(object):
         self.frame.setObjectName("frame")
         self.frame.raise_()
         self.PlotButton.raise_()
-        self.textEdit.raise_()
-        self.textEdit_2.raise_()
-        self.textEdit_3.raise_()
+        self.CurrencyInput.raise_()
+        self.StartDate.raise_()
+        self.EndDate.raise_()
         self.textBrowser_2.raise_()
-        
-        
         GUI.setCentralWidget(self.centralwidget)
-
         self.retranslateUi(GUI)
         QtCore.QMetaObject.connectSlotsByName(GUI)
-    
+
     def retranslateUi(self, GUI):
         _translate = QtCore.QCoreApplication.translate
         GUI.setWindowTitle(_translate("GUI", "Currency analyzer"))
-        self.PlotButton.setText(_translate("GUI", "Plot"))
-        self.textEdit_2.setPlaceholderText(_translate("GUI", "Start date"))
-        self.textEdit_3.setPlaceholderText(_translate("GUI", "end date"))
+        # self.PlotButton.setText(_translate("GUI", "Plot"))
+        self.StartDate.setPlaceholderText(_translate("GUI", "Start date"))
+        self.EndDate.setPlaceholderText(_translate("GUI", "end date"))
         self.textBrowser_2.setHtml(_translate("GUI", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -126,16 +151,21 @@ class Ui_GUI(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">               Date: YEAR-MONTH-DAY</p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Symbol</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    Examples: SOL-USD/ETH-USD</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">    Examples: SOL/ETH</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
 
 
-if __name__ == "__main__":  
+def main():
     app = QApplication(sys.argv)
     GUI = QMainWindow()
-    Ui_GUI().setupUi(GUI)
+    Ui = Ui_GUI()
+    Ui.setupUi(GUI)
     GUI.show()
     sys.exit(app.exec_())
 
+
+
+if __name__ == "__main__":  
+    main()
